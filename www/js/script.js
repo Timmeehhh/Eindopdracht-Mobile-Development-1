@@ -64,6 +64,14 @@ $(function()
 	backButton();
     }
    
+   $(window).on("swiperight", function(e)
+	{
+		if ($.mobile.activePage.attr("id") !== "menu")
+		{
+ 			pageBack();
+ 		}
+    });
+   
    function backButton()
    {   
         switch($.mobile.activePage.attr("id")) 
@@ -76,8 +84,23 @@ $(function()
                 break;
         }
    }
+  
+    $.wait = function(ms) {
+        var defer = $.Deferred();
+        setTimeout(function() { defer.resolve(); }, ms);
+        return defer;
+    };
    
    $("#backButton").on('tap',function()
+   {
+       setTimeout(function (){
+
+            goBack();
+
+         }, 500);
+   });
+   
+   function goBack()
    {
        switch($.mobile.activePage.attr("id")) 
        {
@@ -106,7 +129,7 @@ $(function()
 		$("#backButton").html("");
 	}
 	backButton();
-   });
+   }
    
    function getData(Type)
    {
@@ -225,13 +248,13 @@ $(function()
             
             if (data.facebook_url !== null)
             {
-                contactHTML += "<tr><td>Facebook:</td><td><a href='" + data.facebook_url + "'>" + data.facebook_url + "</a></td></tr>";
+                contactHTML += "<tr><td>Facebook:</td><td><a href='#' class='extern' uri='" + data.facebook_url + "'>" + data.facebook_url + "</a></td></tr>";
             }
             if (data.twitter !== null)
             {
-                contactHTML += "<tr><td>Twitter:</td><td><a href='http://www.twitter.com/" + data.twitter + "'>" + data.twitter + "</a></td></tr>";
+                contactHTML += "<tr><td>Twitter:</td><td><a href='#' class='extern' uri='http://www.twitter.com/" + data.twitter + "'>" + data.twitter + "</a></td></tr>";
             }
-            contactHTML += "<tr><td>Website:</td><td><a href='" + data.website_url + "'>" + data.website_url + "</a></td></tr>";
+            contactHTML += "<tr><td>Website:</td><td><a href='#' class='extern' uri='" + data.website_url + "'>" + data.website_url + "</a></td></tr>";
             contactHTML += "<tr><td>telephone:</td><td>"+ data.telephone +"</td></tr>";
             contactHTML += "</table>";
             
@@ -245,6 +268,12 @@ $(function()
         });
         
    });
+   
+   $('.insertExtraInfo').on('tap', '.extern', function()
+   {
+       window.open($(this).attr('uri'), "_system");
+   });
+   
    
    $('#webWebsite').on('tap',function()
    {
