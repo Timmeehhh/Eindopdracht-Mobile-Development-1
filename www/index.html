@@ -1,54 +1,144 @@
 <!DOCTYPE html>
-<!--
-    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
-
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
-
-
-    Created by: Tim van Beers, 26-01-2016, Waalwijk
--->
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="msapplication-tap-highlight" content="no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <link rel="stylesheet" href="css/jquery-mobile.css">
-        <title>Eet.nu</title>
-    </head>
-    <body>
-        <div id="topBar">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="format-detection" content="telephone=yes" />
+		<meta name="msapplication-tap-highlight" content="no" />
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+		<link rel="stylesheet" href="css/index.css">
+		<link rel="stylesheet" href="css/jquery-mobile.css">
+		<title>Eet.nu</title>
+	</head>
+	<body>
+		<div id="topBar" data-role="header" data-position="fixed">
+			<div id="backButton">
+			</div>
+			<a href="#" id="menuBtn" data-icon="grid" class="ui-btn-right">Menu</a>
+			<center><img id="logo" src="img/logo.png"></center>
+		</div>
+
+		<div data-role="panel" id="menu" data-display="push">
+			<ul data-role="listview">
+                                <li><a href="#restaurantsBekijken" id="restaurantsBekijken">Restaurants bekijken</a></li>
+				<li><a href="#zoekenInBuurt" id="zoekenInBuurt">Zoek in de buurt</a></li>
+				<li><a href="#contact" id="contact">Neem contact op</a></li>
+			</ul>
+		</div>
             
-        </div>
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript">
-            app.initialize();
-        </script>
-    </body>
+                <div data-role="page" id="index">
+			<div data-role="main" class="ui-content">
+				<h1>Welkom bij Eet.nu!</h1>
+				<p>Deze app bevat verschillende functies, verschillend per telefoon. Benieuwd? Klik snel op Menu om te beginnen!</p>
+				<ul class="list-view"></ul>
+			</div>
+		</div>
+            
+                <div data-role="page" id="restaurantsBekijken">
+			<div data-role="main" class="ui-content">
+				<h1>Bekijk of zoek een restaurant.</h1>
+				<p>Hieronder ziet u de meest populaire restaurants. Daarnaast kunt u naar een bepaald restaurant zoeken of bij het klikken op een restaurant meer info bekijken!</p>
+                                <div class="search">
+                                    <input type="text" name="searchinput" value="" placeholder="Zoek.." />
+                                </div>
+				<ul class="list-view"></ul>
+			</div>
+		</div>
+
+		<div data-role="page" data-add-back-btn="true" id="zoekenInBuurt" data-add-back-btn="true">
+			<div data-role="main" class="ui-content">
+				<h1>Een restaurant in de buurt.</h1>
+				<p>Lekker eten maar niet te ver reizen? Kies een restaurant uit de lijst hieronder!</p>
+                                <ul class="list-view"></ul>
+			</div>
+		</div>
+
+		<div data-role="page" data-add-back-btn="true" id="restaurantOnLocationFound">
+			<div data-role="main" class="ui-content">
+				<h1>Vind een restaurant bij u in de buurt!</h1>
+				<p>De volgende resultaten zijn gevonden:</p>
+				<div id="foundRestaurants">
+					<p>Een moment geduld a.u.b. de data wordt geladen..</p>
+				</div>
+			</div>
+		</div>
+
+		<div data-role="page" id="contacts">
+			<div data-role="main" class="ui-content">
+				<h1>Restaurants in uw contacten!</h1>
+				<p>Restaurants die u heeft opgeslagen in uw contactenlijst worden hier getoond:</p>
+				<div class="loadContacts">Data wordt geladen...</div>
+			</div>
+		</div>
+
+		<div data-role="page" id="settings">
+			<div data-role="main" class="ui-content">
+				
+				<div id="infoBox">
+					<!-- Hier worden berichten aan toegevoegd -->
+				</div>
+
+				<h1>Instellingen</h1>
+				<p>Wijzig de lokale instellingen.</p>
+
+				<table width="100%">
+					<tr class="tr_content">
+						<td>Sorteer resultaten op:</td>
+						<td width="5%">&nbsp;</td>
+						<td width="20%">
+							<select id="sort_by" name="sort_by" data-role="dropdown">
+								<option value="rating">Beoordelling</option>
+								<option value="distance">Afstand</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="tr_content">
+						<td></td>
+
+					</tr>
+					<tr class="tr_content">
+						<td>
+							<label for="flip-min">Verwijder resultaten zonder waardering:</label>
+						</td>
+						<td width="20">&nbsp;</td>
+						<td>
+							<select name="needsReview" id="needsReview" data-role="slider">
+								<option value="off">UIT</option>
+								<option value="on">AAN</option>
+							</select>
+						</td>
+					</tr>
+					<tr class="tr_content">
+						<td colspan="3"><button id="changeSettings">Wijzigen</button></td>
+					</tr>
+				</table>
+				<!-- Mogelijkheid om sorteren @ categorieën te wijzigen -->
+				<!-- Mogelijkheid om niet gewaardeerde restaurants niet mee te nemen -->
+				<!-- Toon maximaal aantal resultaten. -->
+			</div>
+		</div>
+
+		<div data-role="page" id="contact">
+			<div data-role="main" class="ui-content">
+				<h1>Neem contact op met Eet.nu</h1>
+				<p>Missen we een restaurant? Kloppen er gegevens niet? Laat het ons weten!</p>
+				<button id="mailButton" class="button">Stuur ons een e-mail!</button>
+				<button id="callButton" class="button">Bel ons!</button>
+				<button id="webWebsite">Bezoek onze website</button>
+			</div>
+		</div>
+
+
+		<div data-role="page" id="restaurantExtraInfo">
+			<div data-role="main" class="ui-content">
+				<div class="insertExtraInfo"></div>
+			</div>
+		</div>
+
+                <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+		<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery-mobile.js"></script>
+		<script type="text/javascript" src="js/swipeupanddown.js"></script>
+		<script type="text/javascript" src="js/script.js"></script>
+	</body>
 </html>
