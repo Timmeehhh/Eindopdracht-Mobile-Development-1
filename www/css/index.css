@@ -11,6 +11,7 @@ h1
 
 #topBar 
 { 
+    padding-top: 10px;
     height:80px; 
     background:#9e005d; 
     overflow:hidden; 
@@ -24,6 +25,7 @@ h1
 
 #menuBtn
 {
+    margin-top: 20px;
     font-size:16px;
     color:#FFF;
     background:#92005d;
@@ -38,7 +40,9 @@ h1
 
 #pageBack 
 { 
-    font-size:25px; background:none; 
+    margin-top: 20px;
+    font-size:25px; 
+    background:none; 
 }
 
 table 

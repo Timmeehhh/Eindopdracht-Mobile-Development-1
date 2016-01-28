@@ -135,9 +135,10 @@ $(function()
    
    function getData(Type)
    {
+       $.mobile.loading('show');
         var url = null;
         ClearListView();
-        showLoading();
+        //showLoading();
         
         if (Type === "restaurantsBekijken")
         {
