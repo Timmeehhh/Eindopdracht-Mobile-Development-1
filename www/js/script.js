@@ -4,12 +4,13 @@ $(function()
    var searchTimeout;
    var idOfPreviousPage = null;
    initApp();
-
+   var long;
+   var lat;
 
    function initApp()
-   {
+   {       
         $("#topBar").toolbar();
-        
+        watchID = navigator.geolocation.watchPosition(onSuccess);
         backButton();
         
         $("#menuBtn").on("tap",function()
@@ -35,6 +36,7 @@ $(function()
             getData("zoekenInBuurt");
         });
    }
+   
    
    function pageBack()
     {
@@ -143,9 +145,9 @@ $(function()
         }
         else if (Type === "zoekenInBuurt")
         {
-            lat = google.loader.ClientLocation.latitude;
-            lng = google.loader.ClientLocation.longitude;
-            url = "https://api.eet.nu/venues?max_distance=5000&geolocation="+lat+","+lng;
+            watchID = navigator.geolocation.watchPosition(onSuccess);
+
+            url = "https://api.eet.nu/venues?max_distance=5000&geolocation="+lat+","+long;
         }
        
        console.log(url);
@@ -180,6 +182,12 @@ $(function()
         {
             hideLoading();
 	});
+   }
+   
+   function onSuccess(position) 
+   {
+       long = position.coords.longitude;
+       lat = position.coords.latitude;
    }
    
    function search(query)
@@ -254,7 +262,11 @@ $(function()
             {
                 contactHTML += "<tr><td>Twitter:</td><td><a href='#' class='extern' uri='http://www.twitter.com/" + data.twitter + "'>" + data.twitter + "</a></td></tr>";
             }
-            contactHTML += "<tr><td>Website:</td><td><a href='#' class='extern' uri='" + data.website_url + "'>" + data.website_url + "</a></td></tr>";
+            if (data.website_url !== null)
+            {
+                contactHTML += "<tr><td>Website:</td><td><a href='#' class='extern' uri='" + data.website_url + "'>" + data.website_url + "</a></td></tr>";
+            }
+            
             contactHTML += "<tr><td>telephone:</td><td>"+ data.telephone +"</td></tr>";
             contactHTML += "</table>";
             
