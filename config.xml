@@ -20,7 +20,6 @@
   <preference name="android-minSdkVersion" value="14"/>
   <preference name="android-installLocation" value="auto"/>
   <gap:plugin name="org.apache.cordova.camera"/>
-  <gap:plugin name="org.apache.cordova.media-capture"/>
   <gap:plugin name="org.apache.cordova.console"/>
   <gap:plugin name="org.apache.cordova.device"/>
   <gap:plugin name="org.apache.cordova.device-motion"/>
@@ -31,7 +30,6 @@
   <gap:plugin name="org.apache.cordova.inappbrowser"/>
   <gap:plugin name="org.apache.cordova.network-information"/>
   <gap:plugin name="org.apache.cordova.splashscreen"/>
-  <gap:plugin name="org.apache.cordova.vibration"/>
   <icon src="icon.png"/>
   <splash src="splash.png" />
   <splash src="Default-667h@2x.png" platform="ios" width="750" height="1334" />
