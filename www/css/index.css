@@ -9,6 +9,11 @@ h1
     font-size:20px; 
 }
 
+#detailTable
+{
+    width: 100%;
+}
+
 #topBar 
 { 
     padding-top: 10px;
@@ -191,9 +196,35 @@ a.restaurantName
   	#logo { max-height:80px; }
   	#menuBtn {  }
   	.ui-listview li a.ui-btn { padding:40px 10px; }*/
+        
+     #topBar
+     {
+         background-color: blue !important;
+     }
+}
+
+@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation : portrait) { 
+    
+    #topBar
+     {
+         background-color: blue !important;
+     }
+     
+     
+     .detailImage
+     {
+         width: 10px;
+         height: 10px;
+     }
+    
 }
 
 @media only screen and (min-width: 750px) {
 	.dataRestaurants { float:left; width:40%; }
 	.tabletView { display:block; float:left; width:60%; }
+}
+
+tr
+{
+    height: 5px !important;
 }

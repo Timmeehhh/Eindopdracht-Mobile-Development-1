@@ -243,10 +243,10 @@ $(function()
             
             if (dirtyFix == "--")
             {
-                showImage = '<tr class="tr_content"><td><img src="../img/notfound.png" /></td></tr>'; 
+                showImage = '<tr class="tr_content"><td><img src="../img/notfound.png" class="detailImage" /></td></tr>'; 
             }else 
             { 
-                showImage = '<tr class="tr_content"><td><img src="'+data.images.cropped+'" /></td></tr>'; 
+                showImage = '<tr class="tr_content"><td><img src="'+data.images.cropped+'" class="detailImage" /></td></tr>'; 
             }
             
             
@@ -274,9 +274,9 @@ $(function()
             
             
                 // mobile view
-                $(".tabletView").html('<table width="100%"><tr class="tr_header"><td colspan="2">'+data.name+'</td></tr>'+showImage+'<td>Adres:</td></tr><tr class="tr_header"><td colspan="2">Beschrijving</td></tr><tr class="tr_content"><td colspan="2">'+dataDescription+'</td></tr><tr class="tr_header"><td colspan="2">Contactinformatie</td></tr></table>');
+                $(".tabletView").html('<table width="100%"><tr class="tr_header"><td colspan="2">'+data.name+'</td></tr>'+showImage+'<td>Adres:</td></tr><tr class="tr_header"><td colspan="2">Beschrijving</td></tr><tr class="tr_content" id="description"><td colspan="2">'+dataDescription+'</td></tr><tr class="tr_header"><td colspan="2">Contactinformatie</td></tr></table>');
                 $("html, body").animate({ scrollTop: 0 }, "slow");
-                $(".insertExtraInfo").html('<table width="100%"><tr class="tr_header"><td colspan="2">'+data.name+'</td></tr>'+showImage+'<tr class="tr_header"><td colspan="2">Beschrijving</td></tr><tr class="tr_content"><td colspan="2">'+dataDescription+'</td></tr><tr class="tr_header"><td colspan="2">Contactinformatie</td></tr><tr class="tr_content"><td colspan="2">' + contactHTML +  '</td></tr></table>');
+                $(".insertExtraInfo").html('<table id="detailTable"><tr class="tr_header"><td colspan="2">'+data.name+'</td></tr>'+showImage+'<tr class="tr_header"><td colspan="2">Beschrijving</td></tr><tr class="tr_content" id="description"><td colspan="2">'+dataDescription+'</td></tr><tr class="tr_header"><td colspan="2">Contactinformatie</td></tr><tr class="tr_content"><td colspan="2">' + contactHTML +  '</td></tr></table>');
                 hideLoading();
         });
         
