@@ -43,7 +43,7 @@ h1
     margin:40px 0 40px; 
 }
 
-#pageBack 
+#pageBack, #settingsPage
 { 
     margin-top: 20px;
     font-size:25px; 
@@ -207,7 +207,7 @@ a.restaurantName
     
     #topBar
      {
-         background-color: blue !important;
+
      }
      
      
