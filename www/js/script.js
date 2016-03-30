@@ -6,13 +6,15 @@ $(function()
    initApp();
    var long;
    var lat;
+   var VenuesURL;
+    var searchTimeout;
 
    function initApp()
    {       
         $("#topBar").toolbar();
         watchID = navigator.geolocation.watchPosition(onSuccess);
         backButton();
-        
+        processStorageData();
         $("#menuBtn").on("tap",function()
         {
             if ($.mobile.activePage.attr("id") !== "menu")
@@ -29,12 +31,36 @@ $(function()
 	});
         
         $('#restaurantsBekijken').on("tap", function(){
+            ClearSearchBar();
             getData("restaurantsBekijken");
         });
         
         $('#zoekenInBuurt').on("tap", function(){
+            ClearSearchBar();
             getData("zoekenInBuurt");
         });
+   }
+   
+   function processStorageData()
+   {
+       if (localStorage.preferredURL = "Top 100 Algemeen")
+       {
+           VenuesURL = "https://api.eet.nu/venues?tags=lekker-top100";
+       }
+       
+       else if (localStorage.preferredURL = "Top 100 Romantisch")
+       {
+           VenuesURL = "https://api.eet.nu/venues?tags=lekker-top100%2Cromantic";
+       }
+       
+       else if (localStorage.preferredURL = "Top 100 Franse keuken")
+       {
+           VenuesURL = "https://api.eet.nu/venues?tags=lekker-top100%2Cfrench";
+       }
+       else
+       {
+           VenuesURL = "https://api.eet.nu/venues?tags=lekker-top100";
+       }
    }
    
    
@@ -58,12 +84,12 @@ $(function()
             default:
                     $.mobile.changePage("#index", { reverse: true, transition: 'slide'});
             break;
-	}
-	if (idOfPreviousPage == "index") 
-        {
-		$("#backButton").html("");
-	}
-	backButton();
+		}
+		if (idOfPreviousPage == "index") 
+		{
+			$("#backButton").html("");
+		}
+		backButton();
     }
    
    $(window).on("swiperight", function(e)
@@ -79,27 +105,20 @@ $(function()
         switch($.mobile.activePage.attr("id")) 
         {
                 case "index":
-                        $("#backButton").html("");
+                        $("#backButton").html("<a href=\"#\" id=\"settingsPage\" class=\"ui-btn-left ui-btn ui-icon-gear ui-btn-icon-notext ui-shadow ui-corner-all\"  data-role=\"button\" role=\"button\" style=\"border:0;\">Back</a>");
                 break;
                 default:
                         $("#backButton").html("<a href=\"#\" id=\"pageBack\" class=\"ui-btn-left ui-btn ui-icon-back ui-btn-icon-notext ui-shadow ui-corner-all\"  data-role=\"button\" role=\"button\" style=\"border:0;\">Back</a>");
                 break;
         }
    }
-  
-    $.wait = function(ms) {
-        var defer = $.Deferred();
-        setTimeout(function() { defer.resolve(); }, ms);
-        return defer;
-    };
    
    $("#backButton").on('tap',function()
    {
-       setTimeout(function (){
-
+        setTimeout(function ()
+        {
             goBack();
-
-         }, 500);
+        }, 500);
    });
    
    function goBack()
@@ -108,7 +127,7 @@ $(function()
        {
             case "index":
                 ClearListView();
-                $("#backButton").html("");
+                $.mobile.changePage("#settings", {transition: 'slideup'});
                 navigator.app.exitApp(); // exit app.
             break;
             case "restaurantOnLocationFound":
@@ -126,23 +145,23 @@ $(function()
                 ClearListView();
                 $.mobile.changePage("#index", { reverse: true, transition: 'slide'});
             break;
-	}
-	if (idOfPreviousPage == "index") {
-		$("#backButton").html("");
-	}
-	backButton();
+		}
+		if (idOfPreviousPage == "index") 
+		{
+			$("#backButton").html("");
+		}
+		backButton();
    }
    
    function getData(Type)
    {
-       $.mobile.loading('show');
         var url = null;
         ClearListView();
-        //showLoading();
+        showLoading();
         
         if (Type === "restaurantsBekijken")
         {
-            url = "https://api.eet.nu/venues?tags=lekker-top100%2Cromantic";
+            url = VenuesURL;
         }
         else if (Type === "zoekenInBuurt")
         {
@@ -175,14 +194,13 @@ $(function()
                     rating = "&nbsp; ("+(value.rating)+")";
                 }
                 
-                html += "<strong class='title'>"+value.name + " " + rating + "</strong><span>Categorie: "+value.category+"</span></a></li>";
-
+                html += "<strong class='title'>"+value.name + " " + rating + "</strong><span>Categorie: "+value.category+"</span></a></li>";	
                 $('.list-view').append(html);
             });
-	}).done(function() 
+		}).done(function() 
         {
             hideLoading();
-	});
+		});
    }
    
    function onSuccess(position) 
@@ -202,24 +220,27 @@ $(function()
             ClearListView();
             showLoading();
 
-            $.get( "https://api.eet.nu/venues?query="+query, function( data ) {
-                    var result = data['results'];
+            $.get( "https://api.eet.nu/venues?query="+query, function( data ) 
+			{
+                var result = data['results'];
 
-                    $.each(result, function(key, value) {
-                            var html = "<li><a href='#' vid='" + value.id + "' class='detailClick'>";
-                            if(value.images.cropped[0] != null)
-                            {
-                                html += "<img class='thumb' src='"+value.images.cropped[0]+"' alt='' title=''>";
-                            }
-                            else
-                            {
-                                html += "<img class='thumb' src='img/notfound.png' alt='' title=''>";
-                            }
-                            html += "<strong class='title'>"+value.name+"</strong><span>Categorie: "+value.category+"</span></a></li>";
+                $.each(result, function(key, value) 
+				{
+					var html = "<li><a href='#' vid='" + value.id + "' class='detailClick'>";
+					if(value.images.cropped[0] != null)
+					{
+						html += "<img class='thumb' src='"+value.images.cropped[0]+"' alt='' title=''>";
+					}
+					else
+					{
+						html += "<img class='thumb' src='img/notfound.png' alt='' title=''>";
+					}
+					html += "<strong class='title'>"+value.name+"</strong><span>Categorie: "+value.category+"</span></a></li>";
 
-                        $('.list-view').append(html);
-                    });
-            }).done(function() {
+                    $('.list-view').append(html);
+                });
+            }).done(function() 
+			{
                     hideLoading();
             });
        }
@@ -243,12 +264,11 @@ $(function()
             
             if (dirtyFix == "--")
             {
-                showImage = '<tr class="tr_content"><td><img src="../img/notfound.png" /></td></tr>'; 
+                showImage = '<tr class="tr_content"><td><img src="../img/notfound.png" class="detailImage" /></td></tr>'; 
             }else 
             { 
-                showImage = '<tr class="tr_content"><td><img src="'+data.images.cropped+'" /></td></tr>'; 
+                showImage = '<tr class="tr_content"><td><img src="'+data.images.cropped+'" class="detailImage" /></td></tr>'; 
             }
-            
             
             var contactHTML = "<table><tr><td>Adres:</td><td>" + address.street + "</td></tr>";
             contactHTML += "<tr><td>Postcode:</td><td>" + address.zipcode + "</td></tr>";
@@ -271,13 +291,11 @@ $(function()
             contactHTML += "<tr><td>telephone:</td><td>"+ data.telephone +"</td></tr>";
             contactHTML += "</table>";
             
-            
-            
-                // mobile view
-                $(".tabletView").html('<table width="100%"><tr class="tr_header"><td colspan="2">'+data.name+'</td></tr>'+showImage+'<td>Adres:</td></tr><tr class="tr_header"><td colspan="2">Beschrijving</td></tr><tr class="tr_content"><td colspan="2">'+dataDescription+'</td></tr><tr class="tr_header"><td colspan="2">Contactinformatie</td></tr></table>');
-                $("html, body").animate({ scrollTop: 0 }, "slow");
-                $(".insertExtraInfo").html('<table width="100%"><tr class="tr_header"><td colspan="2">'+data.name+'</td></tr>'+showImage+'<tr class="tr_header"><td colspan="2">Beschrijving</td></tr><tr class="tr_content"><td colspan="2">'+dataDescription+'</td></tr><tr class="tr_header"><td colspan="2">Contactinformatie</td></tr><tr class="tr_content"><td colspan="2">' + contactHTML +  '</td></tr></table>');
-                hideLoading();
+			// mobile view
+			$(".tabletView").html('<table width="100%"><tr class="tr_header"><td colspan="2">'+data.name+'</td></tr>'+showImage+'<td>Adres:</td></tr><tr class="tr_header"><td colspan="2">Beschrijving</td></tr><tr class="tr_content" id="description"><td colspan="2">'+dataDescription+'</td></tr><tr class="tr_header"><td colspan="2">Contactinformatie</td></tr></table>');
+			$("html, body").animate({ scrollTop: 0 }, "slow");
+			$(".insertExtraInfo").html('<table id="detailTable"><tr class="tr_header"><td colspan="2">'+data.name+'</td></tr>'+showImage+'<tr class="tr_header"><td colspan="2">Beschrijving</td></tr><tr class="tr_content" id="description"><td colspan="2">'+dataDescription+'</td></tr><tr class="tr_header"><td colspan="2">Contactinformatie</td></tr><tr class="tr_content"><td colspan="2">' + contactHTML +  '</td></tr><tr class="tr_header"><td colspan="2">Stuur ons uw foto</td></tr><tr class="tr_content"><td colspan="2"></tr></table>');
+			hideLoading();
         });
         
    });
@@ -291,7 +309,7 @@ $(function()
    $('#webWebsite').on('tap',function()
    {
         window.open("http://www.eet.nu", "_system");
-    });
+   });
 	
     $('#mailButton').on('tap',function()
     {
@@ -302,14 +320,53 @@ $(function()
     {
 	window.location.href = "tel:0612345678"; 
     });
-   
-    var searchTimeout;
+    
+    $('#contactButton').on('tap',function()
+    {
+		var options = new ContactFindOptions();
+		options.filter="Eet.nu"; 
+		var fields = ["displayName", "name"];
+		navigator.contacts.find(fields, onSuccessContact, onErrorContact, options);
+    });
+	
+	function onSuccessContact(contacts) 
+	{
+		if (contacts.length > 0)
+		{
+			alert("Contacgegevens staan al in uw adresboek!");
+		}
+		else
+		{
+			var myContact = navigator.contacts.create({"displayName": "Eet.nu"});
+			myContact.nickname = "Eet.nu";
+			
+			var phoneNumbers = [];
+			phoneNumbers[0] = new ContactField('work', '0612345678', true);
+			myContact.phoneNumbers = phoneNumbers;
+			
+			var emailAdresses = [];
+			emailAdresses[0] = new ContactField('work', 'info@eet.nu', true);
+			myContact.emails = emailAdresses;
+			
+			myContact.save();
+			
+			alert("Contacgegevens toegevoegd aan uw adresboek!");
+		}
+	};
 
-    $('.search input').on('keyup', function() {
-            $this = $(this);
-            searchTimeout = setTimeout(function() {
-                    search($this.val());
-            }, 2000);
+	function onErrorContact(contactError) 
+	{
+		alert('onError!');
+	};
+
+
+    $('.search input').on('keyup', function() 
+    {
+        $this = $(this);
+        searchTimeout = setTimeout(function() 
+        {
+                search($this.val());
+        }, 2000);
     });
 
    function showLoading()
@@ -323,6 +380,11 @@ $(function()
    function ClearListView()
     {
         $('.list-view').empty();
+    }
+    
+    function ClearSearchBar()
+    {
+        $('#searchinput').val('');
     }
    
    function hideLoading()
