@@ -15,7 +15,7 @@ $(function()
         watchID = navigator.geolocation.watchPosition(onSuccess);
         backButton();
         loadLocalStorage();
-        
+
         $("#menuBtn").on("tap",function()
         {
             if ($.mobile.activePage.attr("id") !== "menu")
@@ -44,7 +44,7 @@ $(function()
 
    function loadLocalStorage()
   {   
-    $("#sort_by").val(window.localStorage.getItem("sort_by"));
+    $("#sort_by").val(window.localStorage.getItem("preferredURL"));
     $("#needsReview").val(window.localStorage.getItem("needsReview"));
     $("#kilometers").val(window.localStorage.getItem("kilometers"));
     processStorageData();
@@ -52,16 +52,16 @@ $(function()
    
    function processStorageData()
    {
-       if (window.localStorage.getItem("sort_by") == "Top 100 Algemeen")
+       if (window.localStorage.getItem("preferredURL") == "Top 100 Algemeen")
        {
            VenuesURL = "https://api.eet.nu/venues?tags=lekker-top100";
        }
-       else if (window.localStorage.getItem("sort_by") == "Top 100 Romantisch")
+       else if (window.localStorage.getItem("preferredURL") == "Top 100 Romantisch")
        {
            VenuesURL = "https://api.eet.nu/venues?tags=lekker-top100%2Cromantic";
        }
        
-       else if (window.localStorage.getItem("sort_by") == "Top 100 Franse keuken")
+       else if (window.localStorage.getItem("preferredURL") == "Top 100 Franse keuken")
        {
            VenuesURL = "https://api.eet.nu/venues?tags=lekker-top100%2Cfrench";
        }
@@ -181,7 +181,6 @@ $(function()
         
         if (Type === "restaurantsBekijken")
         {
-			processStorageData();
             url = VenuesURL;
         }
         else if (Type === "zoekenInBuurt")
