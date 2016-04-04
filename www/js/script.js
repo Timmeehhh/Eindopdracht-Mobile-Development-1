@@ -277,15 +277,15 @@ $(function()
             
             if (data.facebook_url !== null)
             {
-                contactHTML += "<tr><td>Facebook:</td><td><a href='#' class='extern' uri='" + data.facebook_url + "'>" + data.facebook_url + "</a></td></tr>";
+                contactHTML += "<tr><td>Facebook:</td><td><a href='#' class='extern' uri='" + data.facebook_url + "'>Klik hier om naar facebook te gaan</a></td></tr>";
             }
             if (data.twitter !== null)
             {
-                contactHTML += "<tr><td>Twitter:</td><td><a href='#' class='extern' uri='http://www.twitter.com/" + data.twitter + "'>" + data.twitter + "</a></td></tr>";
+                contactHTML += "<tr><td>Twitter:</td><td><a href='#' class='extern' uri='http://www.twitter.com/" + data.twitter + "'>Klik hier om naar twitter te gaan</a></td></tr>";
             }
             if (data.website_url !== null)
             {
-                contactHTML += "<tr><td>Website:</td><td><a href='#' class='extern' uri='" + data.website_url + "'>" + data.website_url + "</a></td></tr>";
+                contactHTML += "<tr><td>Website:</td><td><a href='#' class='extern' uri='" + data.website_url + "'>Klik hier om de site te openen</a></td></tr>";
             }
             
             contactHTML += "<tr><td>telephone:</td><td>"+ data.telephone +"</td></tr>";
@@ -371,10 +371,10 @@ $(function()
 
    function showLoading()
    {
-       $.mobile.loading('show', 
-        {
-            defaults: true
-        });
+    var interval = setInterval(function(){
+        $.mobile.loading('show');
+        clearInterval(interval);
+    },1); 
    }
    
    function ClearListView()
@@ -386,10 +386,13 @@ $(function()
     {
         $('#searchinput').val('');
     }
-   
+
    function hideLoading()
-   {
-      $.mobile.loading('hide');
+   { 
+    var interval = setInterval(function(){
+        $.mobile.loading('hide');
+        clearInterval(interval);
+    },1); 
    }
    
 });
