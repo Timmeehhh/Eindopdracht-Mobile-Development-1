@@ -253,7 +253,7 @@ $(function()
 					}
 					else
 					{
-						html += '<i class="sprite sprite-notfound thumb"></i>';
+						html += "<img class='thumb' src='css/images/notfound.png' alt='' title=''>";
 					}
 					html += "<strong class='title'>"+value.name+"</strong><span>Categorie: "+value.category+"</span></a></li>";
 
