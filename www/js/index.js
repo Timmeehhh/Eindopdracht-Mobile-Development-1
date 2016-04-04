@@ -13,25 +13,6 @@ Storage.prototype.getObject	= function (key) {
 	return value && JSON.parse(value);
 }
 
-loadLocalStorage = function ()
-{   
-	$("#sort_by").val(window.localStorage.getObject("sort_by"));
-	$("#needsReview").val(window.localStorage.getObject("needsReview"));
-	$("#kilometers").val(window.localStorage.getObject("kilometers"));
-}
-
-
-saveSettings = function ()
-{
-	window.localStorage.setObject("sort_by", $("#sort_by").val());  
-	window.localStorage.setObject("needsReview", $("#needsReview").val());
-	loadLocalStorage();
-
-	$('#infoBox').html("<p class=\"bg-success\">Instellingen opgeslagen!</p>");
-	$("#infoBox").show().delay(5000).fadeOut("slow");
-};
-
-
 pageBack = function ()
 {
 	switch($.mobile.activePage.attr("id")) {
@@ -79,7 +60,6 @@ backButton = function ()
 
 $(document).ready(function(e)
 {
-	loadLocalStorage();
 	backButton();
 	$.getJSON('https://api.eet.nu/tags?tags=lekker-top100', 
 		function(data){

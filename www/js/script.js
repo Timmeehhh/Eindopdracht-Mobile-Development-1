@@ -39,7 +39,15 @@ $(function()
             ClearSearchBar();
             getData("zoekenInBuurt");
         });
+        loadLocalStorage();
    }
+
+   function loadLocalStorage()
+  {   
+    $("#sort_by").val(window.localStorage.getItem("sort_by"));
+    $("#needsReview").val(window.localStorage.getItem("needsReview"));
+    $("#kilometers").val(window.localStorage.getItem("kilometers"));
+  }
    
    function processStorageData()
    {
@@ -120,6 +128,23 @@ $(function()
             goBack();
         }, 500);
    });
+
+   function saveSettings()
+  {
+    window.localStorage.setItem("sort_by", $("#sort_by").val());  
+    window.localStorage.setItem("needsReview", $("#needsReview").val());
+    
+    $("#sort_by").val(window.localStorage.getItem("sort_by"));
+    $("#needsReview").val(window.localStorage.getItem("needsReview"));
+    $("#kilometers").val(window.localStorage.getItem("kilometers"));
+
+    $('#infoBox').html("<p class=\"bg-success\">Instellingen opgeslagen!</p>");
+    $("#infoBox").show().delay(5000).fadeOut("slow");
+
+    $.mobile.changePage("#index", {transition: 'slidedown'});
+  };
+
+    $("#changeSettings").on('tap', function (){ saveSettings(); });
    
    function goBack()
    {
