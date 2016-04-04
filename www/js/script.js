@@ -14,7 +14,6 @@ $(function()
         $("#topBar").toolbar();
         watchID = navigator.geolocation.watchPosition(onSuccess);
         backButton();
-        processStorageData();
         $("#menuBtn").on("tap",function()
         {
             if ($.mobile.activePage.attr("id") !== "menu")
@@ -45,12 +44,12 @@ $(function()
    function loadLocalStorage()
   {   
     $("#sort_by").val(window.localStorage.getItem("sort_by"));
-    $("#needsReview").val(window.localStorage.getItem("needsReview"));
-    $("#kilometers").val(window.localStorage.getItem("kilometers"));
   }
    
    function processStorageData()
    {
+	   console.log("URL: " + window.localStorage.getItem("preferredURL"));
+	   
        if (localStorage.preferredURL = "Top 100 Algemeen")
        {
            VenuesURL = "https://api.eet.nu/venues?tags=lekker-top100";
@@ -131,13 +130,9 @@ $(function()
 
    function saveSettings()
   {
-    window.localStorage.setItem("sort_by", $("#sort_by").val());  
-    window.localStorage.setItem("needsReview", $("#needsReview").val());
+    window.localStorage.setItem("preferredURL", $("#sort_by").val());  
     
     loadLocalStorage();
-
-    $('#infoBox').html("<p class=\"bg-success\">Instellingen opgeslagen!</p>");
-    $("#infoBox").show().delay(5000).fadeOut("slow");
 
     $.mobile.changePage("#index", {transition: 'slidedown'});
   };
@@ -184,6 +179,7 @@ $(function()
         
         if (Type === "restaurantsBekijken")
         {
+			processStorageData();
             url = VenuesURL;
         }
         else if (Type === "zoekenInBuurt")
