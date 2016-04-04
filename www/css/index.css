@@ -189,6 +189,33 @@ a.restaurantName
     font-weight: bold;
 }
 
+.sprite {
+    background-image: url(../img/spritesheet.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.sprite-logo {
+    width: 120px;
+    height: 64px;
+    background-position: -5px -5px;
+}
+
+.sprite-notfound {
+    width: 336px;
+    height: 280px;
+    background-position: -5px -79px;
+}
+
+.sprite-notfoundthumb {
+    width: 160px;
+    height: 125px;
+    background-position: -351px -5px;
+	float: left; !important
+}
+
+
+
 
 /* Portrait and Landscape Phones */
 @media (max-device-width: 320px) {
@@ -201,22 +228,6 @@ a.restaurantName
      {
          background-color: blue !important;
      }
-}
-
-@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation : portrait) { 
-    
-    #topBar
-     {
-
-     }
-     
-     
-     .detailImage
-     {
-         width: 10px;
-         height: 10px;
-     }
-    
 }
 
 @media only screen and (min-width: 750px) {

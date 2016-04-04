@@ -208,7 +208,7 @@ $(function()
                 }
                 else
                 {
-                    html += "<img class='thumb' src='img/notfound.png' alt='' title=''>";
+                    html += "<img class='thumb' src='css/images/notfound.png' alt='' title=''>";
                 }
                 
                 var rating = "";
@@ -256,7 +256,7 @@ $(function()
 					}
 					else
 					{
-						html += "<img class='thumb' src='img/notfound.png' alt='' title=''>";
+						html += '<i class="sprite sprite-notfound thumb"></i>';
 					}
 					html += "<strong class='title'>"+value.name+"</strong><span>Categorie: "+value.category+"</span></a></li>";
 
@@ -287,7 +287,7 @@ $(function()
             
             if (dirtyFix == "--")
             {
-                showImage = '<tr class="tr_content"><td><img src="../img/notfound.png" class="detailImage" /></td></tr>'; 
+                showImage = '<tr class="tr_content"><td><i class="sprite sprite-notfound"></i></td></tr>'; 
             }else 
             { 
                 showImage = '<tr class="tr_content"><td><img src="'+data.images.cropped+'" class="detailImage" /></td></tr>'; 
