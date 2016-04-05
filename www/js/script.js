@@ -45,8 +45,6 @@ $(function()
    function loadLocalStorage()
   {   
     $("#sort_by").val(window.localStorage.getItem("preferredURL"));
-    $("#needsReview").val(window.localStorage.getItem("needsReview"));
-    $("#kilometers").val(window.localStorage.getItem("kilometers"));
     processStorageData();
   }
    
@@ -69,7 +67,6 @@ $(function()
        {
            VenuesURL = "https://api.eet.nu/venues?tags=lekker-top100";
        }
-       console.log(VenuesURL);
    }
    
    
@@ -173,31 +170,10 @@ $(function()
 		backButton();
    }
    
-   function getData(Type)
+   function processData(result)
    {
-        var url = null;
-        ClearListView();
-        showLoading();
-        
-        if (Type === "restaurantsBekijken")
+	   $.each(result, function(key, value) 
         {
-            url = VenuesURL;
-        }
-        else if (Type === "zoekenInBuurt")
-        {
-            watchID = navigator.geolocation.watchPosition(onSuccess);
-
-            url = "https://api.eet.nu/venues?max_distance=5000&geolocation="+lat+","+long;
-        }
-       
-       console.log(url);
-       
-       $.get( url, function( data ) 
-       {
-            var result = data['results'];
-
-            $.each(result, function(key, value) 
-            {
                 var html = "<li><a href='#' vid='" + value.id + "' class='detailClick'>";
                 if(value.images.cropped[0] != null)
                 {
@@ -217,6 +193,93 @@ $(function()
                 html += "<strong class='title'>"+value.name + " " + rating + "</strong><span>Categorie: "+value.category+"</span></a></li>";	
                 $('.list-view').append(html);
             });
+   }
+   
+   function processData1(result)
+   {
+	   $.each(result, function( index, value ) {
+		alert( index + ": " + value );
+		});
+	
+	}
+   
+   function getData(Type)
+   {
+        var url = null;
+        ClearListView();
+        showLoading();
+        
+        if (Type === "restaurantsBekijken")
+        {
+            url = VenuesURL;
+			var d1 = new Date();
+			if (window.localStorage.getItem("preferredURL") == "Top 100 Algemeen")
+		    {
+				var d2 = new Date(window.localStorage.getItem("AlgemeenExpiration"));
+			    if (window.localStorage.getItem("AlgemeenData") != null && d2 > d1)
+				{
+					processData(jQuery.parseJSON(window.localStorage.getItem("AlgemeenData")));
+					hideLoading();
+					return;
+				}
+		    }
+		    else if (window.localStorage.getItem("preferredURL") == "Top 100 Romantisch")
+		    {
+				var d2 = new Date(window.localStorage.getItem("RomantischExpiration"));
+			    if (window.localStorage.getItem("RomantischData") != null && d2 > d1)
+				{
+					processData(jQuery.parseJSON(window.localStorage.getItem("RomantischData")));
+					hideLoading();
+					return;
+				}
+		    }
+		   
+		    else if (window.localStorage.getItem("preferredURL") == "Top 100 Franse keuken")
+		    {
+				var d2 = new Date(window.localStorage.getItem("FransExpiration"));
+			    if (window.localStorage.getItem("FransData") != null && d2 > d1)
+				{
+					processData(jQuery.parseJSON(window.localStorage.getItem("FransData")));
+					hideLoading();
+					return;
+				}
+		    }
+        }
+        else if (Type === "zoekenInBuurt")
+        {
+            watchID = navigator.geolocation.watchPosition(onSuccess);
+
+            url = "https://api.eet.nu/venues?max_distance=5000&geolocation="+lat+","+long;
+        }
+       
+       
+       $.get( url, function( data ) 
+       {
+            var result = data['results'];
+			
+			var d = new Date();
+			d.setDate(d.getDate() + 1);
+
+			if (window.localStorage.getItem("preferredURL") == "Top 100 Algemeen")
+		    {
+			   window.localStorage.setItem("AlgemeenData", JSON.stringify(result));  
+			   window.localStorage.setItem("AlgemeenExpiration", d);
+		    }
+		    else if (window.localStorage.getItem("preferredURL") == "Top 100 Romantisch")
+		    {
+			   window.localStorage.setItem("RomantischData", JSON.stringify(result));  
+			   window.localStorage.setItem("RomantischExpiration", d);
+		    }
+		   
+		    else if (window.localStorage.getItem("preferredURL") == "Top 100 Franse keuken")
+		    {
+			   window.localStorage.setItem("FransData", JSON.stringify(result));  
+			   window.localStorage.setItem("FransExpiration", d);
+		    }
+
+
+            processData(result);
+			
 		}).done(function() 
         {
             hideLoading();
