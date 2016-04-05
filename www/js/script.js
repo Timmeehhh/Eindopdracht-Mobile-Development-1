@@ -134,6 +134,7 @@ $(function()
     loadLocalStorage();
 
     $.mobile.changePage("#index", {transition: 'slidedown'});
+	$("#backButton").html("<a href=\"#\" id=\"settingsPage\" class=\"ui-btn-left ui-btn ui-icon-gear ui-btn-icon-notext ui-shadow ui-corner-all\"  data-role=\"button\" role=\"button\" style=\"border:0;\">Back</a>");
   };
 
     $("#changeSettings").on('tap', function (){ saveSettings(); });
